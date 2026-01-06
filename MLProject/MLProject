@@ -1,0 +1,7 @@
+name: Project_Air_Saya
+
+conda_env: requirements.txt
+
+entry_points:
+  main:
+    command: "python modelling.py"

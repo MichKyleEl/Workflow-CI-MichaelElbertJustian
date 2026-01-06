@@ -1,0 +1,40 @@
+name: Training Otomatis
+
+on: [push]
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Check Env
+      run: python --version
+
+    - name: Install Dependencies
+      run: |
+        pip install --upgrade pip
+        pip install mlflow pandas numpy scikit-learn matplotlib
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run mlflow project
+      run: |
+        mlflow run . --env-manager=local
+
+    - name: Get latest MLflow run_id
+      run: |
+        # Script python kecil untuk mencari Run paling baru
+        python -c "import mlflow; runs = mlflow.search_runs(order_by=['start_time desc'], max_results=1); print(f'Run ID: {runs.iloc[0].run_id}')"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: hasil-training-mlflow
+        path: mlruns/
