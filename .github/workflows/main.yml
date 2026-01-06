@@ -21,7 +21,7 @@ jobs:
         pip install mlflow pandas numpy scikit-learn matplotlib
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Run Model Training via MLflow (Syarat Reviewer)
+    - name: Run Model Training
       run: |
         mlflow run . --env-manager=local
 
